@@ -1,6 +1,17 @@
 # Keep Zap's Git info, but place the path and branch above the input.
 PROMPT='%B%F{cyan}%~%f%b${vcs_info_msg_0_}
 %B%F{yellow}⚡%f %(?:%F{green}➜:%F{red}➜)%f%b '
+_transient_prompt_full=$PROMPT
+
+_transient_prompt_line_finish() {
+  PROMPT='%B%F{yellow}⚡%f%b '
+  RPROMPT=''
+  zle reset-prompt
+}
+
+_transient_prompt_precmd() {
+  PROMPT=$_transient_prompt_full
+}
 
 command -v azenv >/dev/null && eval "$(azenv init zsh)"
 
@@ -148,4 +159,6 @@ _cloud_context_refresh
 autoload -Uz add-zle-hook-widget add-zsh-hook
 add-zle-hook-widget zle-line-init _cloud_context_line_init
 add-zle-hook-widget zle-line-pre-redraw _cloud_context_hint
+add-zle-hook-widget zle-line-finish _transient_prompt_line_finish
+add-zsh-hook precmd _transient_prompt_precmd
 add-zsh-hook chpwd _cloud_context_terraform_refresh
