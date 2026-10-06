@@ -3,7 +3,7 @@
 ## Setup
 
 ```bash
-sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply git@github.com:lognseth/dotfiles.git
+sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply git@github.com:mlognseth-3as/.files.git
 ```
 
 ## Common commands
