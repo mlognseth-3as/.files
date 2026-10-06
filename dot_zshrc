@@ -42,7 +42,7 @@ zle -N expand-alias-space
 bindkey ' ' expand-alias-space
 
 # Completion
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
 autoload -Uz compinit
 compinit
 
@@ -52,3 +52,6 @@ compdef kubecolor=kubectl 2>/dev/null
 # Optional integrations
 command -v fzf >/dev/null && source <(fzf --zsh)
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+
+# Prompt and contextual tool hints
+[[ -f ~/.zsh/prompt.zsh ]] && source ~/.zsh/prompt.zsh

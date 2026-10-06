@@ -1,40 +1,94 @@
-alias tf="terraform"
-alias docker="container"
-alias docker-compose="container-compose"
-alias c="clear"
-alias grep="\grep"
-alias g="git"
-alias gc="git commit -am "
-alias gp="git push"
-alias gfuck="git reset --soft HEAD~"
-alias gst="git status"
-alias gd="git diff"
-alias k="kubectl"
-alias kubectl="kubecolor"
-alias kx="kubectx"
-alias ks="kubens"
-alias kux="kubie ctx"
-alias kgp="kubectl get pods"
-alias kgs="kubectl get svc"
-alias kgd="kubectl get deploy"
-alias kgi="kubectl get ingress"
-alias klog="kubectl logs -f"
-alias kdesc="kubectl describe"
-alias debug-pod="kubectl run debug-pod -i --tty --image busybox:latest"
-alias attach-debug-pod="kubectl attach debug-pod -c debug-pod -i -t"
-alias tf="terraform"
-alias tfa="terraform apply"
-alias tfp="terraform plan"
-alias tfi="terraform init"
-alias tfw="terraform workspace"
+alias c='clear'
+
+# Git
+alias g='git'
+alias gb='git checkout -b'
+alias gc='git commit -am '
+alias gp='git push'
+alias gfuck='git reset --soft HEAD~'
+alias gst='git status'
+alias gd='git diff'
+
+# Kubernetes
+alias k='kubectl'
+alias kubectl='kubecolor'
+alias kx='kubectx'
+alias ks='kubens'
+alias kux='kubie ctx'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get svc'
+alias kgd='kubectl get deploy'
+alias kgi='kubectl get ingress'
+alias klog='kubectl logs -f'
+alias kdesc='kubectl describe'
+alias debug-pod='kubectl run debug-pod -i --tty --image busybox:latest'
+alias attach-debug-pod='kubectl attach debug-pod -c debug-pod -i -t'
+
+# Terraform
+alias tf='terraform'
+alias tfa='terraform apply'
+alias tfp='terraform plan'
+alias tfi='terraform init'
+alias tfw='terraform workspace'
 alias tf-docs='terraform-docs markdown table --output-file README.md --output-mode inject --sort-by "required" --lockfile=false ./'
-alias ax="az fzf subscription"
-alias azfs="az fzf subscription"
-alias azfg="az fzf group"
-alias azfl="az fzf location"
-alias azc="az account set -s"
-alias azl="az account list -o table"
-alias az-ihk="az login --tenant 2c3bd968-e2a6-469f-87e6-36a92b2b4ce0"
+
+# Docker
+alias d='docker'
+alias dc='docker compose'
+alias dps="docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'"
+
+# Azure
+alias ax='az fzf subscription'
+alias azfs='az fzf subscription'
+alias azfg='az fzf group'
+alias azfl='az fzf location'
+alias azc='az account set -s'
+alias azl='az account list -o table'
+
+# AWS
 alias aws-profiles="grep -o '\[[^]]*\]' ~/.aws/credentials"
-alias sk="stackit"
-alias skp="stackit config set -p"
+
+# StackIT
+alias sk='stackit'
+alias skp='stackit config set -p'
+
+skctx() {
+  stackit ske kubeconfig create "${1:-dev}" --login
+}
+
+# Other
+alias myip="curl -s https://ipv4.wtfismyip.com/json | jq '.YourFuckingIPAddress'"
+alias sso-stuck='pkill -f "Company Portal"'
+alias brewup='brew update && brew upgrade && brew cleanup'
+
+fix-git() {
+  local current repo
+  current=$(git remote get-url origin 2>/dev/null)
+  if [[ "$current" == *"github.com"* ]]; then
+    repo=$(echo "$current" | sed 's|.*github.com[:/]\(.*\)\.git|\1|')
+  else
+    repo="3as-cloud/$(basename "$PWD")"
+  fi
+  git remote set-url origin "$(gh repo view "$repo" --json sshUrl -q .sshUrl)"
+}
+
+refresh-main() {
+  local current
+  current=$(git branch --show-current 2>/dev/null)
+
+  if [[ -z "$current" ]]; then
+    echo 'Not on a branch, or not inside a Git repository.' >&2
+    return 1
+  fi
+
+  if [[ "$current" == 'main' ]]; then
+    git pull --ff-only
+    return $?
+  fi
+
+  git switch main && git pull --ff-only
+  local rc=$?
+
+  git switch "$current"
+  return $rc
+}

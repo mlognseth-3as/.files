@@ -2,12 +2,10 @@ font-thicken=false
 font-feature=-liga
 font-size = 15
 font-family = JetBrainsMonoNerdFont-Regular
-# theme = light:Atom One Light,dark:Atom One Dark
-# theme = light:Ayu Light,dark:Ayu
 theme = dark:zedokai-darker-octagon,light:zedokai-light-sun
-palette = 6= #13C299 
-palette = 4= #24ACD4 
-palette = 2= #47d912 
+palette = 6= #13C299
+palette = 4= #24ACD4
+palette = 2= #47d912
 palette = 1= #f62b5a
 # macos-titlebar-style = tabs
 shell-integration-features = no-cursor
