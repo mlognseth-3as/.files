@@ -1,0 +1,122 @@
+{
+  "cli_default_open_behavior": "existing_window",
+  "outline_panel": {
+    "button": false,
+  },
+  "collaboration_panel": {
+    "button": false,
+  },
+  "project_panel": {
+    "dock": "left",
+  },
+  "git_panel": {
+    "dock": "left",
+  },
+  "completions": {
+    "lsp": true,
+  },
+  "tab_size": 2,
+  "indent_guides": {
+    "active_line_width": 4,
+    "line_width": 2,
+    "background_coloring": "disabled",
+    "coloring": "indent_aware",
+  },
+  "sticky_scroll": {
+    "enabled": true,
+  },
+  "colorize_brackets": true,
+  "bottom_dock_layout": "contained",
+  "icon_theme": {
+    "mode": "light",
+    "light": "Material Icon Theme",
+    "dark": "Material Icon Theme",
+  },
+  "agent": {
+    "default_model": {
+      "provider": "openai-subscribed",
+      "model": "gpt-5.5",
+      "enable_thinking": true,
+      "effort": "medium",
+    },
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "terminal": {
+    "toolbar": {
+      "breadcrumbs": false,
+    },
+    "font_size": 14.0,
+    "flexible": true,
+    "max_scroll_history_lines": 100000,
+    "default_width": 320.0,
+    "default_height": 320.0,
+    "show_count_badge": false,
+    "dock": "bottom",
+    "font_family": "IBM Plex Sans",
+    "detect_venv": {
+      "on": {
+        "directories": [".env", "env", ".venv", "venv"],
+        "activate_script": "default",
+      },
+    },
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "system",
+    "light": "Zedokai Light (Filter Sun)",
+    "dark": "Zedokai Darker (Filter Octagon)",
+  },
+  "auto_install_extensions": {
+    "zedokai": true,
+    "html": true,
+    "toml": true,
+    "git-firefly": true,
+    "dockerfile": true,
+    "make": true,
+    "xml": true,
+    "terraform": true,
+    "rainbow-csv": true,
+    "powershell": true,
+    "terraform-context-server": true,
+    "mcp-server-github": true,
+    "material-icon-theme": true,
+    "opencode": true,
+    "github-copilot": true,
+    "Helm": true,
+    "comment": true,
+  },
+  "autosave": "on_focus_change",
+  "current_line_highlight": "all",
+  "format_on_save": "on",
+  "lsp": {
+    "terraform-ls": {
+      "initialization_options": {
+        "experimentalFeatures": {
+          "prefillRequiredFields": true,
+          "validateOnSave": true,
+        },
+        "validation": {
+          "enableEnhancedValidation": true,
+        },
+      },
+    },
+  },
+  "languages": {
+    "Terraform": {
+      "format_on_save": "on",
+      "formatter": "language_server",
+    },
+  },
+  "file_types": {
+    "Helm": [
+      "**/templates/**/*.tpl",
+      "**/templates/**/*.yaml",
+      "**/templates/**/*.yml",
+      "**/helmfile.d/**/*.yaml",
+      "**/helmfile.d/**/*.yml",
+    ],
+  },
+}
