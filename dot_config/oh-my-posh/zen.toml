@@ -1,0 +1,169 @@
+console_title_template = '{{ .Shell }} in {{ .Folder }}'
+version = 4
+final_space = true
+
+[palette]
+  bi = 'linear-gradient(#FF5CAA, #C77DFF, #6EA8FF)'
+
+[secondary_prompt]
+  template = '❯❯ '
+  foreground = 'magenta'
+  background = 'transparent'
+
+[transient_prompt]
+  template = '❯ '
+  background = 'transparent'
+  foreground_templates = [
+    '{{if gt .Code 0}}red{{end}}',
+    '{{if eq .Code 0}}magenta{{end}}',
+  ]
+
+# ── Left: session / shell / path ─────────────────────────────────────────────
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+
+
+  [[blocks.segments]]
+    type = 'status'
+    style = 'plain'
+    background = 'transparent'
+    template = '{{ if gt .Code 0 }}󰅙 {{ .Code }} {{ else }}✓ {{ end }}'
+    foreground_templates = [
+      '{{ if gt .Code 0 }}red{{ end }}',
+      '{{ if eq .Code 0 }}green{{ end }}',
+    ]
+    [blocks.segments.properties]
+      always_enabled = true
+
+  [[blocks.segments]]
+    type = 'path'
+    style = 'plain'
+    background = 'transparent'
+    foreground = 'p:bi'
+    template = '{{ .Path }} '
+    [blocks.segments.properties]
+      style = 'full'
+
+  # [[blocks.segments]]
+  #   type = 'time'
+  #   style = 'plain'
+  #   background = 'transparent'
+  #   foreground = 'yellow'
+  #   template = '󰥔 {{ .CurrentDate | date .Format }} '
+  #   [blocks.segments.properties]
+  #     time_format = '15:04:05'
+
+  [[blocks.segments]]
+    type = 'git'
+    style = 'plain'
+    background = 'transparent'
+    foreground = '#ff9b00'
+    foreground_templates = [
+      '{{ if or (.Working.Changed) (.Staging.Changed) }}#ff9b00{{ end }}',
+      '{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FFCC80{{ end }}',
+      '{{ if gt .Ahead 0 }}#B388FF{{ end }}',
+      '{{ if gt .Behind 0 }}#B388FB{{ end }}',
+    ]
+    template = '{{ .UpstreamIcon }}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}   {{ .StashCount }}{{ end }} '
+    [blocks.segments.properties]
+      fetch_status = true
+      fetch_upstream_icon = true
+      source = 'cli'
+
+# ── Prompt character ──────────────────────────────────────────────────────────
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    background = 'transparent'
+    template = '❯'
+    foreground_templates = [
+      '{{if gt .Code 0}}red{{end}}',
+      '{{if eq .Code 0}}magenta{{end}}',
+    ]
+
+# ── Tooltips ──────────────────────────────────────────────────────────────────
+
+[[tooltips]]
+  type = 'git'
+  style = 'plain'
+  background = 'transparent'
+  foreground = '#ff9b00'
+  tips = ['git', 'g']
+  foreground_templates = [
+    '{{ if or (.Working.Changed) (.Staging.Changed) }}#ff9b00{{ end }}',
+    '{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FFCC80{{ end }}',
+    '{{ if gt .Ahead 0 }}#B388FF{{ end }}',
+    '{{ if gt .Behind 0 }}#B388FB{{ end }}',
+  ]
+  template = '{{ .UpstreamIcon }}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} '
+  [tooltips.properties]
+    fetch_status = true
+    fetch_upstream_icon = true
+    source = 'cli'
+
+[[tooltips]]
+  type = 'kubectl'
+  style = 'powerline'
+  foreground = '#326CE5'
+  tips = ['k', 'kubectl', 'kx', 'kubectx', 'ks', 'kubens', 'kubescape', 'kubie', 'kgp', 'kgs', 'kgd', 'klog']
+  template = ' ☸️ {{ .Context }}{{ if .Namespace }}:<red>{{ .Namespace }}</>{{ end }} '
+  [tooltips.properties]
+    parse_kubeconfig = true
+
+[[tooltips]]
+  type = 'terraform'
+  style = 'powerline'
+  foreground = '#844FBA'
+  tips = ['terraform', 'tf', 'tfa', 'tfp', 'tfi', 'tfw']
+  template = ' {{ .WorkspaceName }} '
+  [tooltips.properties]
+    fetch_version = false
+
+[[tooltips]]
+  type = 'az'
+  style = 'powerline'
+  foreground = '#3CCBF4'
+  tips = ['azenv', 'az', 'ax', 'azctx', 'azc', 'azl']
+  template = ' 💠 {{ if .Env.AZENV_CONTEXT }}{{ .Env.AZENV_CONTEXT }} | {{ end }}{{ .Name }}{{ if ne .EnvironmentName "AzureCloud" }} {{ .EnvironmentName }}{{ end }} '
+
+
+[[tooltips]]
+  type = 'aws'
+  style = 'powerline'
+  foreground = '#FF9900'
+  tips = ['aws']
+  template = ' 🟠 {{.Profile}}{{if .Region}}@{{.Region}}{{end}} '
+
+[[tooltips]]
+  type = 'docker'
+  style = 'powerline'
+  foreground = '#0B59E7'
+  tips = ['docker', 'd', 'dc']
+  template = '🐳 {{ .Context }} '
+
+[[tooltips]]
+  type = 'gcp'
+  style = 'powerline'
+  foreground = '#47888d'
+  tips = ['gcloud']
+  template = ' ☁️ {{.Project}} :: {{.Account}} '
+
+[[tooltips]]
+  type = 'pulumi'
+  style = 'powerline'
+  foreground = '#662d91'
+  tips = ['pulumi']
+  template = ' {{ .Stack }} '
+
+[[tooltips]]
+  type = 'argocd'
+  style = 'powerline'
+  foreground = '#FFA400'
+  tips = ['argocd']
+  template = ' 🐙 {{ .Server }} '

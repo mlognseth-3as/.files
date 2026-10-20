@@ -14,7 +14,6 @@ unset ZAP_DIR
 # Zap plugins
 plug "zsh-users/zsh-autosuggestions"
 plug "zap-zsh/supercharge"
-plug "zap-zsh/zap-prompt"
 plug "zsh-users/zsh-syntax-highlighting"
 
 # History
@@ -39,16 +38,41 @@ zle -N expand-alias-space
 bindkey ' ' expand-alias-space
 
 # Completion
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'm:{a-zA-Z} l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
 
 compdef k=kubectl 2>/dev/null
 compdef kubecolor=kubectl 2>/dev/null
 
 # Optional integrations
-command -v fzf >/dev/null && source <(fzf --zsh)
+if [[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh && -f /opt/homebrew/opt/fzf/shell/completion.zsh ]]; then
+  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+  source /opt/homebrew/opt/fzf/shell/completion.zsh
+elif command -v fzf >/dev/null; then
+  source <(fzf --zsh)
+fi
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
-
-# Prompt and contextual tool hints
-[[ -f ~/.zsh/prompt.zsh ]] && source ~/.zsh/prompt.zsh
+if command -v azenv >/dev/null; then
+  azenv() {
+    local init
+    init="$(command azenv init zsh)" || return
+    unfunction azenv
+    eval "$init" || return
+    azenv "$@"
+  }
+fi
 
 export PATH=$PATH:~/.cargo/bin
+
+# pnpm
+export PNPM_HOME="/Users/mikael.lognseth/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# Prompt and contextual tool hints
+if command -v oh-my-posh >/dev/null && [[ -f "$HOME/.config/oh-my-posh/zen.toml" ]]; then
+  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/zen.toml")"
+  ZLE_RPROMPT_INDENT=1
+fi
