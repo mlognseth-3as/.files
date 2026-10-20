@@ -23,7 +23,7 @@ end
 
 set -g fish_greeting 'Hey Mika, welcome back... you gorgeous hunk 😏
 Remember to drink some water today 😘'
-set -g fish_color_command magenta
+set -g fish_color_command C77DFF
 
 # Fish provides history sharing, autosuggestions, syntax highlighting, and
 # case-insensitive substring completion (including directory completion).
